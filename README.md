@@ -1,5 +1,7 @@
 # OpenTelemetry Collector Demo
 
+To run the demo application terminal commands
+
 ```shell
 docker-compose up -d
 ```
