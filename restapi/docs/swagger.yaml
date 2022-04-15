@@ -1,0 +1,180 @@
+basePath: /v1
+definitions:
+  handler.ErrorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  pb.CountriesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/pb.Country'
+        type: array
+    type: object
+  pb.Country:
+    properties:
+      calling_code:
+        type: integer
+      display_order:
+        type: integer
+      english_name:
+        type: string
+      id:
+        type: integer
+      iso_code2:
+        type: string
+      iso_code3:
+        type: string
+      name:
+        type: string
+      published:
+        type: boolean
+    type: object
+  pb.CountryResponse:
+    properties:
+      data:
+        $ref: '#/definitions/pb.Country'
+    type: object
+  pb.Language:
+    properties:
+      culture_code:
+        type: string
+      display_order:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      published:
+        type: boolean
+      rtl:
+        type: boolean
+    type: object
+  pb.LanguageResponse:
+    properties:
+      data:
+        $ref: '#/definitions/pb.Language'
+    type: object
+  pb.LanguagesResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/pb.Language'
+        type: array
+    type: object
+host: localhost:1919
+info:
+  contact:
+    email: destek@maydere.com
+    name: Maydere
+    url: http://www.maydere.com
+  description: A set of APIs to allow applications interact to with the Umay API.
+  title: Umay API
+  version: "1.0"
+paths:
+  /common/countries:
+    get:
+      consumes:
+      - application/json
+      description: Get countries.
+      operationId: get-countries
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.CountriesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Get countries
+      tags:
+      - Common
+  /common/countries/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get country.
+      operationId: get-country
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.CountryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Get country
+      tags:
+      - Common
+  /common/languages:
+    get:
+      consumes:
+      - application/json
+      description: Get languages.
+      operationId: get-languages
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.LanguagesResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Get languages
+      tags:
+      - Common
+  /common/languages/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get language.
+      operationId: get-language
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/pb.LanguageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.ErrorResponse'
+      summary: Get language
+      tags:
+      - Common
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

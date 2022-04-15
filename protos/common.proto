@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package common;
+
+option go_package = ".;pb";
+
+import "google/protobuf/empty.proto";
+
+message Identifier {
+  int32 id = 1;
+}
+
+message Language {
+  int32 id = 1;
+  string culture_code = 2;
+  string name = 3;
+  bool rtl = 4;
+  bool published = 5;
+  int32 display_order = 6;
+}
+
+message Country {
+  int32 id = 1;
+  string name = 2;
+  string english_name = 3;
+  string iso_code2 = 4;
+  string iso_code3 = 5;
+  int32 calling_code = 6;
+  bool published = 7;
+  int32 display_order = 8;
+}
+
+message LanguageResponse {
+  Language data = 1;
+}
+
+message LanguagesResponse {
+  repeated Language data = 1;
+}
+
+message CountryResponse {
+  Country data = 1;
+}
+
+message CountriesResponse {
+  repeated Country data = 1;
+}
+
+service CommonService {
+  rpc GetCountries (google.protobuf.Empty) returns (CountriesResponse) {}
+  rpc GetCountry (Identifier) returns (CountryResponse) {}
+  rpc GetLanguages (google.protobuf.Empty) returns (LanguagesResponse) {}
+  rpc GetLanguage (Identifier) returns (LanguageResponse) {}
+}
