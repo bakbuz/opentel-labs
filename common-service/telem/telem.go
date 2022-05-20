@@ -21,8 +21,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-// Initializes an OTLP exporter, and configures the corresponding trace and
-// metric providers.
+// Initializes an OTLP exporter, and configures the corresponding trace and metric providers.
 func InitProvider(otelAgentAddr string, serviceNameKey string) func() {
 	ctx := context.Background()
 
@@ -31,7 +30,7 @@ func InitProvider(otelAgentAddr string, serviceNameKey string) func() {
 		otlpmetricgrpc.WithEndpoint(otelAgentAddr))
 	metricExp, err := otlpmetric.New(ctx, metricClient)
 	if err != nil {
-		log.Fatalf("%s: %v", "Failed to create the collector metric exporter", err)
+		log.Fatalf("%s: %v", "failed to create the collector metric exporter", err)
 	}
 
 	pusher := controller.New(
@@ -46,7 +45,7 @@ func InitProvider(otelAgentAddr string, serviceNameKey string) func() {
 
 	err = pusher.Start(ctx)
 	if err != nil {
-		log.Fatalf("%s: %v", "Failed to start metric pusher", err)
+		log.Fatalf("%s: %v", "failed to start metric pusher", err)
 	}
 
 	traceClient := otlptracegrpc.NewClient(
@@ -55,7 +54,7 @@ func InitProvider(otelAgentAddr string, serviceNameKey string) func() {
 		otlptracegrpc.WithDialOption(grpc.WithBlock()))
 	traceExp, err := otlptrace.New(ctx, traceClient)
 	if err != nil {
-		log.Fatalf("%s: %v", "Failed to create the collector trace exporter", err)
+		log.Fatalf("%s: %v", "failed to create the collector trace exporter", err)
 	}
 
 	res, err := resource.New(ctx,
