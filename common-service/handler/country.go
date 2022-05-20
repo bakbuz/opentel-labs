@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/pkg/errors"
 	"go.opentelemetry.io/otel"
@@ -12,18 +11,13 @@ import (
 )
 
 func (h *Handler) GetCountries(ctx context.Context, req *emptypb.Empty) (*pb.CountriesResponse, error) {
-	fmt.Println("********************* GetCountries 1 ***********************************")
 	ctx, span := otel.Tracer("common-service").Start(ctx, "GetCountries")
 	defer span.End()
-
-	fmt.Println("********************* GetCountries 2 ***********************************")
 
 	dbResult, err := h.CountryStore.GetAllCountries(ctx)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
-
-	fmt.Println("********************* GetCountries 3 ***********************************")
 
 	var items []*pb.Country = make([]*pb.Country, len(dbResult))
 	for i, dbItem := range dbResult {
@@ -38,8 +32,6 @@ func (h *Handler) GetCountries(ctx context.Context, req *emptypb.Empty) (*pb.Cou
 			DisplayOrder: int32(dbItem.DisplayOrder),
 		}
 	}
-
-	fmt.Println("********************* GetCountries 4 ***********************************")
 
 	return &pb.CountriesResponse{Data: items}, nil
 }
