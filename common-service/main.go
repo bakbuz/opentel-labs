@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 	"maydere.com/opentel-labs/common-service/handler"
 	"maydere.com/opentel-labs/common-service/pb"
-	"maydere.com/opentel-labs/common-service/x"
+	"maydere.com/opentel-labs/common-service/telem"
 )
 
 var (
@@ -85,7 +85,7 @@ func run(ctx context.Context) error {
 	log.Info().Int("tcp_port", tcpPort).Str("otel_agent_addr", otelAgentAddr).Msg("common-service application is starting. v0.0.1")
 
 	// init tracer provider
-	tracerProvider := x.InitProvider(otelAgentAddr, "common-service")
+	tracerProvider := telem.InitProvider(otelAgentAddr, "common-service")
 	defer tracerProvider()
 
 	// handler
