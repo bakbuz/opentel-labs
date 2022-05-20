@@ -25,3 +25,9 @@ v:
 
 swag:
 	cd restapi && $(GOPATH)/bin/swag init -g main.go
+
+upgr:
+	cd common-service && go get -u all
+	cd common-service && go mod tidy
+	cd restapi && go get -u all
+	cd restapi && go mod tidy
