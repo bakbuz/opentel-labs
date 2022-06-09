@@ -18,6 +18,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/pkgerrors"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 
 	"maydere.com/opentel-labs/restapi/handler"
@@ -95,7 +96,12 @@ func run(ctx context.Context) error {
 	var commonConn grpc.ClientConn
 	go func() {
 		backoff.Retry(func() error {
-			conn, err := grpc.DialContext(ctx, commonServiceAddr, grpc.WithInsecure(), grpc.WithBlock())
+			conn, err := grpc.DialContext(ctx,
+				commonServiceAddr,
+				grpc.WithInsecure(),
+				grpc.WithBlock(),
+				grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+			)
 			if err != nil {
 				return err
 			} else {

@@ -16,7 +16,10 @@ func (h *Handler) GetLanguages(ctx context.Context, req *emptypb.Empty) (*pb.Lan
 	// ctx, span := otel.Tracer("common-service").Start(ctx, "GetLanguages")
 	// defer span.End()
 
-	span := trace.SpanFromContext(ctx)
+	// span := trace.SpanFromContext(ctx)
+	// defer span.End()
+
+	ctx, span := trace.SpanFromContext(ctx).TracerProvider().Tracer("common-service").Start(ctx, "GetLanguages")
 	defer span.End()
 
 	span.AddEvent("language records retrieving")

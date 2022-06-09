@@ -15,6 +15,8 @@ up:
 down:
 	@echo "down"
 	sudo docker-compose down
+	sudo docker image rm maydere/common-service --force
+	sudo docker image rm maydere/restapi --force
 
 clean:
 	go clean -modcache

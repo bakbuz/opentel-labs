@@ -13,6 +13,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/pkgerrors"
+	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"maydere.com/opentel-labs/common-service/handler"
 	"maydere.com/opentel-labs/common-service/pb"
@@ -108,8 +109,8 @@ func run(ctx context.Context) error {
 		}
 
 		grpcServer := grpc.NewServer(
-		//grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
-		//grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
+			grpc.UnaryInterceptor(otelgrpc.UnaryServerInterceptor()),
+			//grpc.StreamInterceptor(otelgrpc.StreamServerInterceptor()),
 		)
 
 		pb.RegisterCommonServiceServer(grpcServer, srv)
