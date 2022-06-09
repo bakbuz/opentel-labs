@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -18,18 +17,11 @@ type Handler struct {
 	CommonClient pb.CommonServiceClient
 }
 
-func newHandler() *Handler {
-	h := &Handler{}
-
-	return h
-}
-
 func (h *Handler) RegisterHandlers(v1 *echo.Group) {
-	common := v1.Group("/common")
-	common.GET("/countries", h.HandleCountries)
-	common.GET("/countries/:id", h.HandleCountry)
-	common.GET("/languages", h.HandleLanguages)
-	common.GET("/languages/:id", h.HandleLanguage)
+	v1.GET("/countries", h.HandleCountries)
+	v1.GET("/countries/:id", h.HandleCountry)
+	v1.GET("/languages", h.HandleLanguages)
+	v1.GET("/languages/:id", h.HandleLanguage)
 }
 
 type ErrorResponse struct {
@@ -49,30 +41,18 @@ type ErrorResponse struct {
 // @Failure 500 {object} ErrorResponse
 // @Router /common/countries [get]
 func (h *Handler) HandleCountries(c echo.Context) error {
-	fmt.Println("********************* HandleCountries 1 ***********************************")
-
 	ctx := c.Request().Context()
 	ctx, span := otel.Tracer("restapi").Start(ctx, "HandleCountries")
 	defer span.End()
 
-	fmt.Println("********************* HandleCountries 2 ***********************************")
-
 	logger := zerolog.Ctx(ctx)
 	logger.Info().Msg("HandleCountries")
-
-	fmt.Println("********************* HandleCountries 3 ***********************************")
-
-	if h.CommonClient == nil {
-		fmt.Println("********************* HandleCountries CommonClient IS NIL ***********************************")
-	}
 
 	data, err := h.CommonClient.GetCountries(ctx, &emptypb.Empty{})
 	if err != nil {
 		logger.Error().Err(err).Msg("")
 		return errors.WithStack(err)
 	}
-
-	fmt.Println("********************* HandleCountries 4 ***********************************")
 
 	return errors.WithStack(c.JSON(http.StatusOK, data))
 }

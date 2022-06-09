@@ -5,13 +5,17 @@ import (
 
 	"github.com/pkg/errors"
 	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/trace"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"maydere.com/opentel-labs/common-service/pb"
 )
 
 func (h *Handler) GetLanguages(ctx context.Context, req *emptypb.Empty) (*pb.LanguagesResponse, error) {
-	ctx, span := otel.Tracer("common-service").Start(ctx, "GetLanguages")
+	// ctx, span := otel.Tracer("common-service").Start(ctx, "GetLanguages")
+	// defer span.End()
+	span := trace.SpanFromContext(ctx)
+	span.SetName("get_languages")
 	defer span.End()
 
 	dbResult, err := h.LanguageStore.GetAllLanguages(ctx)
