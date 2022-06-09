@@ -9,10 +9,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"reflect"
 	"time"
 
-	"github.com/cenkalti/backoff"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
@@ -91,32 +89,20 @@ func main() {
 func run(ctx context.Context) error {
 	logger := zerolog.Ctx(ctx)
 
-	// gRPC Client
 	// Set up a connection to the server.
-	var commonConn grpc.ClientConn
-	go func() {
-		backoff.Retry(func() error {
-			conn, err := grpc.DialContext(ctx,
-				commonServiceAddr,
-				grpc.WithInsecure(),
-				grpc.WithBlock(),
-				grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
-			)
-			if err != nil {
-				return err
-			} else {
-				commonConn = *conn
-				return nil
-			}
-		}, backoff.WithContext(backoff.NewConstantBackOff(time.Second*1), ctx))
-	}()
-
-	defer func() {
-		emptyConnection := grpc.ClientConn{}
-		if !reflect.DeepEqual(commonConn, emptyConnection) {
-			commonConn.Close()
-		}
-	}()
+	commonConn, err := grpc.DialContext(ctx,
+		commonServiceAddr,
+		grpc.WithInsecure(),
+		grpc.WithBlock(),
+		grpc.WithUnaryInterceptor(otelgrpc.UnaryClientInterceptor()),
+	)
+	if err != nil {
+		logger.Err(err).Msgf("couldn't connect to common service")
+		return err
+	} else {
+		logger.Info().Msgf("connected to common service")
+	}
+	defer commonConn.Close()
 
 	// echo
 	e := echo.New()
@@ -134,7 +120,7 @@ func run(ctx context.Context) error {
 	api := e.Group("/v1")
 
 	h := &handler.Handler{
-		CommonServiceClient: pb.NewCommonServiceClient(&commonConn),
+		CommonServiceClient: pb.NewCommonServiceClient(commonConn),
 	}
 	h.RegisterHandlers(api)
 
