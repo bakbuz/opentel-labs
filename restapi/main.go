@@ -158,7 +158,7 @@ func run(ctx context.Context) error {
 	logger.Info().Str("listen_addr", srv.Addr).Str("common_service_addr", commonServiceAddr).Msg("restapi application is starting. v0.0.1")
 
 	// init tracer proviler
-	tracerProvider := telem.InitProvider(otelAgentAddr, "restapi")
+	tracerProvider := telem.InitProvider(ctx, otelAgentAddr, "restapi")
 	defer tracerProvider()
 
 	select {

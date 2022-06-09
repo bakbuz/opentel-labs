@@ -86,7 +86,7 @@ func run(ctx context.Context) error {
 	log.Info().Int("tcp_port", tcpPort).Str("otel_agent_addr", otelAgentAddr).Msg("common-service application is starting. v0.0.1")
 
 	// init tracer provider
-	tracerProvider := telem.InitProvider(otelAgentAddr, "common-service")
+	tracerProvider := telem.InitProvider(ctx, otelAgentAddr, "common-service")
 	defer tracerProvider()
 
 	// handler
