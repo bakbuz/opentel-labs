@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"time"
 
 	"github.com/pkg/errors"
 	"go.opentelemetry.io/otel"
@@ -14,14 +15,21 @@ import (
 func (h *Handler) GetLanguages(ctx context.Context, req *emptypb.Empty) (*pb.LanguagesResponse, error) {
 	// ctx, span := otel.Tracer("common-service").Start(ctx, "GetLanguages")
 	// defer span.End()
+
 	span := trace.SpanFromContext(ctx)
-	span.SetName("get_languages")
 	defer span.End()
+
+	span.AddEvent("language records retrieving")
+	time.Sleep(time.Second)
+	span.AddEvent("sleeped")
 
 	dbResult, err := h.LanguageStore.GetAllLanguages(ctx)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
+
+	span.AddEvent("language records retrieved from database")
+
 	var items []*pb.Language = make([]*pb.Language, len(dbResult))
 	for i, dbItem := range dbResult {
 		items[i] = &pb.Language{

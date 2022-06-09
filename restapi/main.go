@@ -128,7 +128,7 @@ func run(ctx context.Context) error {
 	api := e.Group("/v1")
 
 	h := &handler.Handler{
-		CommonClient: pb.NewCommonServiceClient(&commonConn),
+		CommonServiceClient: pb.NewCommonServiceClient(&commonConn),
 	}
 	h.RegisterHandlers(api)
 

@@ -6,7 +6,7 @@ require (
 	github.com/cenkalti/backoff v2.2.1+incompatible
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/pkg/errors v0.9.1
-	github.com/rs/zerolog v1.26.1
+	github.com/rs/zerolog v1.27.0
 	github.com/swaggo/echo-swagger v1.3.2
 	github.com/swaggo/swag v1.8.2
 	go.opentelemetry.io/otel v1.7.0
@@ -46,10 +46,10 @@ require (
 	go.opentelemetry.io/proto/otlp v0.16.0 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
-	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
+	golang.org/x/sys v0.0.0-20220608164250-635b8c9b7f68 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20220411224347-583f2d630306 // indirect
 	golang.org/x/tools v0.1.10 // indirect
-	google.golang.org/genproto v0.0.0-20220602131408-e326c6e8e9c8 // indirect
+	google.golang.org/genproto v0.0.0-20220608133413-ed9918b62aac // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

@@ -14,7 +14,7 @@ import (
 
 // Handler ...
 type Handler struct {
-	CommonClient pb.CommonServiceClient
+	CommonServiceClient pb.CommonServiceClient
 }
 
 func (h *Handler) RegisterHandlers(v1 *echo.Group) {
@@ -48,7 +48,7 @@ func (h *Handler) HandleCountries(c echo.Context) error {
 	logger := zerolog.Ctx(ctx)
 	logger.Info().Msg("HandleCountries")
 
-	data, err := h.CommonClient.GetCountries(ctx, &emptypb.Empty{})
+	data, err := h.CommonServiceClient.GetCountries(ctx, &emptypb.Empty{})
 	if err != nil {
 		logger.Error().Err(err).Msg("")
 		return errors.WithStack(err)
@@ -77,7 +77,7 @@ func (h *Handler) HandleCountry(c echo.Context) error {
 	logger := zerolog.Ctx(ctx)
 	logger.Info().Msg("HandleCountry")
 
-	data, err := h.CommonClient.GetCountry(ctx, &pb.Identifier{Id: 1})
+	data, err := h.CommonServiceClient.GetCountry(ctx, &pb.Identifier{Id: 1})
 	if err != nil {
 		logger.Error().Err(err).Msg("")
 		return errors.WithStack(err)
@@ -105,11 +105,14 @@ func (h *Handler) HandleLanguages(c echo.Context) error {
 	logger := zerolog.Ctx(ctx)
 	logger.Info().Msg("HandleLanguages")
 
-	data, err := h.CommonClient.GetLanguages(ctx, &emptypb.Empty{})
+	data, err := h.CommonServiceClient.GetLanguages(ctx, &emptypb.Empty{})
 	if err != nil {
 		logger.Error().Err(err).Msg("")
 		return errors.WithStack(err)
 	}
+
+	span.AddEvent("language records retrieved from common-service")
+
 	return errors.WithStack(c.JSON(http.StatusOK, data))
 }
 
@@ -133,7 +136,7 @@ func (h *Handler) HandleLanguage(c echo.Context) error {
 	logger := zerolog.Ctx(ctx)
 	logger.Info().Msg("HandleLanguage")
 
-	data, err := h.CommonClient.GetLanguage(ctx, &pb.Identifier{Id: 1})
+	data, err := h.CommonServiceClient.GetLanguage(ctx, &pb.Identifier{Id: 1})
 	if err != nil {
 		logger.Error().Err(err).Msg("")
 		return errors.WithStack(err)
