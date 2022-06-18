@@ -4,12 +4,14 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"go.opentelemetry.io/otel"
 	"google.golang.org/protobuf/types/known/emptypb"
 
 	"maydere.com/opentel-labs/restapi/pb"
+	"maydere.com/opentel-labs/restapi/utils"
 )
 
 // Handler ...
@@ -18,10 +20,15 @@ type Handler struct {
 }
 
 func (h *Handler) RegisterHandlers(v1 *echo.Group) {
+	jwtMiddleware := middleware.JWT(utils.JWTSecret)
+
 	v1.GET("/countries", h.HandleCountries)
 	v1.GET("/countries/:id", h.HandleCountry)
 	v1.GET("/languages", h.HandleLanguages)
 	v1.GET("/languages/:id", h.HandleLanguage)
+
+	user := v1.Group("/users", jwtMiddleware)
+	user.GET("/session", h.CurrentUser)
 }
 
 type ErrorResponse struct {

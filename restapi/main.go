@@ -113,6 +113,7 @@ func run(ctx context.Context) error {
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodPut, http.MethodPatch},
 		AllowHeaders:     []string{},
 		AllowCredentials: true,
+		
 	}))
 
 	// echo router
