@@ -1,4 +1,4 @@
-FROM golang:1.18
+FROM golang:1.20
 COPY . /usr/src/common-service/
 WORKDIR /usr/src/common-service/
 RUN go env -w GOPROXY=direct
