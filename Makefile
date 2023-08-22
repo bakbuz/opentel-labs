@@ -1,4 +1,4 @@
-.PHONY: pb up down clean v swag
+.PHONY: pb pb2 up down clean v swag
 
 pb:
 	@echo $(GOPATH)
@@ -8,12 +8,12 @@ pb:
 	protoc --proto_path=./protos/ ./protos/*.proto --go_out=./restapi/pb --go_opt=paths=source_relative
 	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./restapi/pb --go-grpc_opt=paths=source_relative --plugin=$(GOPATH)/bin/protoc-gen-go-grpc
 
-pb:
+pb2:
 	protoc --proto_path=./protos/ ./protos/*.proto --go_out=./common-service/pb --go_opt=paths=source_relative
 	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./common-service/pb --go-grpc_opt=paths=source_relative --plugin=C:\Users\Dumrul\go\bin\protoc-gen-go-grpc
 
 	protoc --proto_path=./protos/ ./protos/*.proto --go_out=./restapi/pb --go_opt=paths=source_relative
-	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./restapi/pb --go-grpc_opt=paths=source_relative --plugin=$(GOPATH)/bin/protoc-gen-go-grpc	
+	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./restapi/pb --go-grpc_opt=paths=source_relative --plugin=C:\Users\Dumrul\go\bin\protoc-gen-go-grpc
 
 up:
 	@echo "up"
