@@ -1,8 +1,11 @@
 package handler
 
 import (
+	"context"
 	"net/http"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
@@ -20,7 +23,8 @@ func (h *Handler) getCurrentUser(c echo.Context) (*model.User, error) {
 		return nil, errors.WithStack(err)
 	}
 
-	user, err := h.UserStore.GetUserById(c.Request().Context(), userId)
+	//user, err := h.UserStore.GetUserById(c.Request().Context(), userId)
+	user, err := getSampleUser(c.Request().Context(), userId)
 	if err != nil {
 		return nil, errors.WithStack(err)
 	}
@@ -73,4 +77,20 @@ func newSessionResponse(user *model.User) *SessionResponse {
 	res.Avatar = user.Avatar
 	res.Token = utils.GenerateJWT(user.Id)
 	return res
+}
+
+func getSampleUser(ctx context.Context, userId uuid.UUID) (*model.User, error) {
+	return &model.User{
+		Id:                  userId,
+		Username:            "deli.dumrul",
+		Email:               "deli.dumrul@maydere.com",
+		EmailVerified:       false,
+		PhoneNumber:         "",
+		PhoneNumberVerified: false,
+		DisplayName:         "Deli Dumrul",
+		Avatar:              "",
+		Language:            "tr-TR",
+		Deleted:             false,
+		JoinedAt:            time.Now(),
+	}, nil
 }
