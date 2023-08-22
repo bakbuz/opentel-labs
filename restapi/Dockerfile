@@ -1,5 +1,5 @@
 # use latest 1.x golang debian buster image for the building stage
-FROM golang:1.18 AS builder
+FROM golang:1.21 AS builder
 
 WORKDIR /usr/local/src/restapi
 
