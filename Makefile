@@ -8,6 +8,13 @@ pb:
 	protoc --proto_path=./protos/ ./protos/*.proto --go_out=./restapi/pb --go_opt=paths=source_relative
 	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./restapi/pb --go-grpc_opt=paths=source_relative --plugin=$(GOPATH)/bin/protoc-gen-go-grpc
 
+pb:
+	protoc --proto_path=./protos/ ./protos/*.proto --go_out=./common-service/pb --go_opt=paths=source_relative
+	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./common-service/pb --go-grpc_opt=paths=source_relative --plugin=C:\Users\Dumrul\go\bin\protoc-gen-go-grpc
+
+	protoc --proto_path=./protos/ ./protos/*.proto --go_out=./restapi/pb --go_opt=paths=source_relative
+	protoc --proto_path=./protos/ ./protos/*.proto --go-grpc_out=./restapi/pb --go-grpc_opt=paths=source_relative --plugin=$(GOPATH)/bin/protoc-gen-go-grpc	
+
 up:
 	@echo "up"
 	sudo docker-compose up --build
